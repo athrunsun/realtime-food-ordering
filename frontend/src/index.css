@@ -1,0 +1,11 @@
+.black-box {
+    height: 100px;
+    background: #000;
+    color: #fff;
+}
+
+.blue-box {
+    height: 100px;
+    background: blue;
+    color: #fff;
+}

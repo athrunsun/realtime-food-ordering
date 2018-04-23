@@ -1,0 +1,45 @@
+version: '2'
+services:
+    food_ordering_local_mysql_db:
+        image: mysql:5.7
+        container_name: food_ordering_local_mysql_db
+        networks:
+            - food_ordering_local_mysql_network
+        volumes:
+            - food_ordering_local_mysql_db_data:/var/lib/mysql
+        ports:
+            - '13308:3306'
+        environment:
+            TZ: 'UTC'
+            MYSQL_ROOT_PASSWORD: 'athrun123'
+            MYSQL_DATABASE: 'food_ordering'
+            MYSQL_USER: 'food_ordering_admin'
+            MYSQL_PASSWORD: 'athrun123'
+        command:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+            - --skip-character-set-client-handshake
+    food_ordering_local_mysql_adminer:
+        image: adminer:4.6.2
+        container_name: food_ordering_local_mysql_adminer
+        networks:
+            - food_ordering_local_mysql_network
+        ports:
+            - '18083:8080'
+        links:
+            - food_ordering_local_mysql_db:mysql
+    food_ordering_local_redis:
+        image: redis:3.2-alpine
+        container_name: food_ordering_local_redis
+        networks:
+            - food_ordering_local_mysql_network
+        command: redis-server --appendonly yes # --requirepass password
+        volumes:
+          - food_ordering_local_redis_data:/data
+        ports:
+            - 16379:6379
+volumes:
+    food_ordering_local_mysql_db_data:
+    food_ordering_local_redis_data:
+networks:
+    food_ordering_local_mysql_network:
