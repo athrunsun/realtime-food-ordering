@@ -15,6 +15,7 @@ module.exports = app => {
             description: STRING(255),
         },
         {
+            // Rename/disable Timestamp columns: https://github.com/sequelize/sequelize/issues/791
             timestamps: false,
         },
     );

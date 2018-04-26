@@ -3,7 +3,7 @@
 const Controller = require('egg').Controller;
 
 class OrderController extends Controller {
-    async exchange() {
+    async ordering() {
         const { ctx, app } = this;
         const nsp = app.io.of('/');
         const message = ctx.args[0] || {};
@@ -13,8 +13,8 @@ class OrderController extends Controller {
         try {
             const { target, payload } = message;
             if (!target) return;
-            const msg = ctx.helper.parseMsg('exchange', payload, { client, target });
-            nsp.emit(target, msg);
+            const msg = ctx.helper.parseMsg('ordering', payload, { client, target });
+            nsp.emit(client, msg);
         } catch (error) {
             app.logger.error(error);
         }

@@ -22,14 +22,15 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 include: path.resolve(__dirname, 'src'),
                 use: {
                     loader: 'babel-loader',
                     options: {
                         cacheDirectory: true,
-                        presets: ['react'],
-                    }
+                        presets: ['stage-1', 'react'],
+                        plugins: ['react-hot-loader/babel'],
+                    },
                 },
             },
             {
@@ -46,11 +47,11 @@ const config = {
                         options: {
                             sourceMap: true,
                         },
-                    }
+                    },
                 ],
             },
             {
-                test: /\.less$/,
+                test: /\.scss$/,
                 use: [
                     {
                         loader: 'style-loader',
@@ -65,7 +66,7 @@ const config = {
                         },
                     },
                     {
-                        loader: 'less-loader',
+                        loader: 'sass-loader',
                         options: {
                             sourceMap: true,
                         },
@@ -86,6 +87,15 @@ const config = {
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
     ],
+    resolve: {
+        alias: {
+            components: `${__dirname}/src/components`,
+            containers: `${__dirname}/src/containers`,
+            actions: `${__dirname}/src/actions`,
+            reducers: `${__dirname}/src/reducers`,
+            configureStore: `${__dirname}/src/configureStore`,
+        },
+    },
 };
 
 module.exports = config;

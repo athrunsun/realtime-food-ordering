@@ -3,6 +3,7 @@
 const appConfig = appInfo => {
     const config = {};
     config.keys = 'bread-theory';
+    config.defaultRoomName = 'room:food-ordering';
 
     config.redis = {
         client: {
@@ -36,6 +37,11 @@ const appConfig = appInfo => {
         port: '13308',
         username: 'food_ordering_admin',
         password: 'athrun123',
+    };
+
+    config.logger = {
+        //level: 'DEBUG',
+        consoleLevel: 'DEBUG',
     };
 
     return config;
