@@ -5,18 +5,28 @@ const Controller = require('egg').Controller;
 class OrderController extends Controller {
     async ordering() {
         const { ctx, app } = this;
-        const nsp = app.io.of('/');
-        const message = ctx.args[0] || {};
+        const { io, logger, config } = app;
+        const nsp = io.of('/');
+        const incomingMsg = ctx.args[0] || {};
         const socket = ctx.socket;
-        const client = socket.id;
+        const socketId = socket.id;
+        const query = socket.handshake.query;
+        const { room, userId } = query;
 
         try {
-            const { target, payload } = message;
-            if (!target) return;
-            const msg = ctx.helper.parseMsg('ordering', payload, { client, target });
-            nsp.emit(client, msg);
+            const { meta, payload } = incomingMsg;
+            const { food } = payload;
+            
+            if (!food) {
+                logger.error('No food is specified in the message!');
+                return;
+            }
+            
+            const outgoingMsg = ctx.helper.normalizeMsg('Food ordering succeeded!');
+            nsp.emit(socketId, outgoingMsg);
+            nsp.to(room).emit(config.broadcastEventName, outgoingMsg);
         } catch (error) {
-            app.logger.error(error);
+            logger.error(error);
         }
     }
 }

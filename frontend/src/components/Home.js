@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 
+import StoreSales from 'components/StoreSales';
+import MyOrderings from 'components/MyOrderings';
+import FoodList from 'components/FoodList';
+import Cart from 'components/Cart';
+
 class Home extends Component {
     handleWindowOnLoad = () => {
-        const socket = io('http://localhost:7001/', {
+        const socket = io(DEFAULT_WEBSOCKET_SERVER, {
             query: {
-                room: 'food-ordering',
-                userId: `client_${Math.random()}`,
+                room: DEFAULT_ROOM_NAME,
             },
             transports: ['websocket'],
         });
@@ -33,7 +37,24 @@ class Home extends Component {
     }
 
     render() {
-        return <div>This is the home page!</div>;
+        return (
+            <div className="container">
+                <div className="tile is-ancestor">
+                    <div className="tile is-vertical is-parent">
+                        <StoreSales />
+                        <MyOrderings />
+                    </div>
+                </div>
+                <div className="tile is-ancestor">
+                    <div className="tile is-8">
+                        <FoodList />
+                    </div>
+                    <div className="tile">
+                        <Cart />
+                    </div>
+                </div>
+            </div>
+        );
     }
 }
 

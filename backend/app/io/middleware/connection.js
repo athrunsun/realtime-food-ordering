@@ -9,6 +9,7 @@ module.exports = app => {
         const query = socket.handshake.query;
 
         const { room, userId } = query;
+        const rooms = [ room ];
 
         logger.debug('#user_info', id, room, userId);
 

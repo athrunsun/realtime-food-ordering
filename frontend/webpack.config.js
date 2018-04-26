@@ -86,6 +86,10 @@ const config = {
         }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({
+            DEFAULT_WEBSOCKET_SERVER: JSON.stringify('http://localhost:7001'),
+            DEFAULT_ROOM_NAME: JSON.stringify('room:food-ordering'),
+        }),
     ],
     resolve: {
         alias: {

@@ -1,7 +1,14 @@
 'use strict';
 
 module.exports = {
-    parseMsg(action, payload = {}, metadata = {}) {
+    parseMsg(msg) {
+        return {
+            meta: msg.meta,
+            payload: msg.payload,
+        };
+    },
+
+    normalizeMsg(payload = {}, metadata = {}) {
         const meta = Object.assign(
             {},
             {
@@ -12,10 +19,7 @@ module.exports = {
 
         return {
             meta,
-            data: {
-                action,
-                payload,
-            },
+            payload,
         };
     },
 };
