@@ -5,7 +5,7 @@ class MyOrderings extends Component {
         return (
             <div className="tile is-child">
                 <nav className="panel">
-                    <p className="panel-heading">我的订餐</p>
+                    <p className="panel-heading">我的实时订餐情况</p>
                     <a className="panel-block">
                         <span className="panel-icon">
                             <i className="fas fa-code-fork" aria-hidden="true" />

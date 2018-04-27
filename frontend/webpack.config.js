@@ -87,8 +87,9 @@ const config = {
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({
-            DEFAULT_WEBSOCKET_SERVER: JSON.stringify('http://localhost:7001'),
+            WEBSOCKET_SERVER: JSON.stringify('http://localhost:7001'),
             DEFAULT_ROOM_NAME: JSON.stringify('room:food-ordering'),
+            SERVER_ADDRESS: JSON.stringify('http://localhost:7001'),
         }),
     ],
     resolve: {
@@ -98,6 +99,7 @@ const config = {
             actions: `${__dirname}/src/actions`,
             reducers: `${__dirname}/src/reducers`,
             configureStore: `${__dirname}/src/configureStore`,
+            utils: `${__dirname}/src/utils`,
         },
     },
 };

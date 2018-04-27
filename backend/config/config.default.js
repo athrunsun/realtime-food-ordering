@@ -45,6 +45,17 @@ const appConfig = appInfo => {
         consoleLevel: 'DEBUG',
     };
 
+    // https://github.com/eggjs/egg-cors#usage
+    // exports.security = {
+    //     domainWhiteList: ['http://localhost:3000'],
+    // };
+
+    // https://github.com/eggjs/egg-cors#configuration
+    config.cors = {
+        origin: '*',
+        //allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH'
+    }
+
     return config;
 };
 

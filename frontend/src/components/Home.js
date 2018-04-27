@@ -8,7 +8,7 @@ import Cart from 'components/Cart';
 
 class Home extends Component {
     handleWindowOnLoad = () => {
-        const socket = io(DEFAULT_WEBSOCKET_SERVER, {
+        const socket = io(WEBSOCKET_SERVER, {
             query: {
                 room: DEFAULT_ROOM_NAME,
             },

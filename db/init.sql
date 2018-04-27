@@ -2,5 +2,6 @@ CREATE TABLE IF NOT EXISTS `food` (
   `food_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `description` VARCHAR(500) NULL,
+  `price` DECIMAL(8, 2) NULL,
   PRIMARY KEY (`food_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;

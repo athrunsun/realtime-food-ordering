@@ -5,7 +5,7 @@ class StoreSales extends Component {
         return (
             <div className="tile is-child">
                 <nav className="panel">
-                    <p className="panel-heading">店铺销售</p>
+                    <p className="panel-heading">店铺实时销售情况</p>
                     <a className="panel-block is-active">
                         <span className="panel-icon">
                             <i className="fas fa-book" aria-hidden="true" />
@@ -42,13 +42,6 @@ class StoreSales extends Component {
                         </span>
                         mojs
                     </a>
-                    <label className="panel-block">
-                        <input type="checkbox" />
-                        remember me
-                    </label>
-                    <div className="panel-block">
-                        <button className="button is-link is-outlined is-fullwidth">reset all filters</button>
-                    </div>
                 </nav>
             </div>
         );
