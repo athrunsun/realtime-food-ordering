@@ -25,6 +25,14 @@ This is a sample nodejs + reactjs web app to learn [egg.js](https://eggjs.org) a
 * `yarn install`
 * `yarn watch`, compile and watch file changes.
 * `yarn server`, start development server to serve compiled files (I didn't use webpack-dev-server so we need 2 steps here to start dev server).
+* Open browser at `http://localhost:3000`, one browser tab corresponds to a "user".
+
+## Screenshots
+User 1:
+![user_1](https://raw.githubusercontent.com/athrunsun/realtime-food-ordering/master/screenshots/user_1.png)
+
+User 2:
+![user_2](https://raw.githubusercontent.com/athrunsun/realtime-food-ordering/master/screenshots/user_2.png)
 
 ## TODO
 * Create config files (for webpack and egg.js) to create a production build.
