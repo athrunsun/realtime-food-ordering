@@ -2,7 +2,8 @@
 
 const routes = app => {
     const { router, controller, io } = app;
-    router.get('food', '/food/all', controller.food.allFood);
+    router.get('/food/all', controller.food.allFood);
+    router.get('/food/insertTestData', controller.food.insertTestData);
     io.of('/').route('ordering', io.controller.order.ordering);
 };
 

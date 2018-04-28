@@ -17,7 +17,12 @@ module.exports = app => {
         },
         {
             // Rename/disable Timestamp columns: https://github.com/sequelize/sequelize/issues/791
+            // don't add the timestamp attributes (updatedAt, createdAt)
             timestamps: false,
+
+            // don't use camelcase for automatically added attributes but underscore style
+            // so updatedAt will be updated_at
+            //underscored: false,
         },
     );
 

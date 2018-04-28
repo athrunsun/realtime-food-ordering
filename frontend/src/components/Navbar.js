@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { insertTestData } from 'actions';
 
 class Navbar extends Component {
+    handleInsertTestDataClick = () => {
+        const { dispatch } = this.props;
+        dispatch(insertTestData());
+    };
+
     render() {
         return (
             <nav className="navbar is-fixed-top is-info">
@@ -29,9 +37,17 @@ class Navbar extends Component {
                         <div className="navbar-item">
                             <div className="field is-grouped">
                                 <p className="control">
+                                    <button
+                                        className="button is-link"
+                                        onClick={this.handleInsertTestDataClick}
+                                    >
+                                        <span>插入测试数据</span>
+                                    </button>
+                                </p>
+                                <p className="control">
                                     <a
                                         className="button is-primary"
-                                        href="https://github.com/jgthms/bulma/releases/download/0.7.0/bulma-0.7.0.zip"
+                                        href="https://github.com/athrunsun/realtime-food-ordering"
                                     >
                                         <span className="icon">
                                             <i className="fas fa-github" />
@@ -48,4 +64,4 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar;
+export default connect()(Navbar);
