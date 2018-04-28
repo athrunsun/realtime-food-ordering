@@ -2,7 +2,7 @@ import * as log from 'loglevel';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import CartItem from 'components/CartItem';
+import CartItem from 'containers/CartItem';
 import { clearCart } from 'actions';
 
 class Cart extends Component {

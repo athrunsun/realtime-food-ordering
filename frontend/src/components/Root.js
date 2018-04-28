@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import { hot } from 'react-hot-loader';
+
 import configureStore, { history } from 'configureStore';
 import App from 'components/App';
-import { hot } from 'react-hot-loader';
 
 const initialState = {};
 

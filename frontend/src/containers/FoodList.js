@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Food from 'components/Food';
+import Food from 'containers/Food';
 import { fetchFoodList } from 'actions';
 
 class FoodList extends Component {

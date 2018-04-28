@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import io from 'socket.io-client';
 import * as log from 'loglevel';
 
-import StoreSales from 'components/StoreSales';
-import MyOrderings from 'components/MyOrderings';
-import FoodList from 'components/FoodList';
-import Cart from 'components/Cart';
+import StoreSales from 'containers/StoreSales';
+import MyOrderings from 'containers/MyOrderings';
+import FoodList from 'containers/FoodList';
+import Cart from 'containers/Cart';
 
 import { recordSale, recordMyOrdering, updateOnlineUsers } from 'actions';
 
