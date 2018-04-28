@@ -1,51 +1,42 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import StoreSaleRecord from 'components/StoreSaleRecord';
 
 class StoreSales extends Component {
     render() {
+        const { salesRecords, onlineUsers } = this.props;
+
+        const salesRecordsElements =
+            salesRecords == null || salesRecords.length <= 0
+                ? null
+                : salesRecords.map((record, index) => <StoreSaleRecord key={index} saleRecord={record} />);
+
         return (
             <div className="tile is-child">
                 <nav className="panel">
-                    <p className="panel-heading">店铺实时销售情况</p>
-                    <a className="panel-block is-active">
-                        <span className="panel-icon">
-                            <i className="fas fa-book" aria-hidden="true" />
-                        </span>
-                        bulma
-                    </a>
-                    <a className="panel-block">
-                        <span className="panel-icon">
-                            <i className="fas fa-book" aria-hidden="true" />
-                        </span>
-                        marksheet
-                    </a>
-                    <a className="panel-block">
-                        <span className="panel-icon">
-                            <i className="fas fa-book" aria-hidden="true" />
-                        </span>
-                        minireset.css
-                    </a>
-                    <a className="panel-block">
-                        <span className="panel-icon">
-                            <i className="fas fa-book" aria-hidden="true" />
-                        </span>
-                        jgthms.github.io
-                    </a>
-                    <a className="panel-block">
-                        <span className="panel-icon">
-                            <i className="fas fa-code-fork" aria-hidden="true" />
-                        </span>
-                        daniellowtw/infboard
-                    </a>
-                    <a className="panel-block">
-                        <span className="panel-icon">
-                            <i className="fas fa-code-fork" aria-hidden="true" />
-                        </span>
-                        mojs
-                    </a>
+                    <div className="panel-heading">
+                        <div className="level" style={{ width: '100%' }}>
+                            <div className="level-left">店铺实时销售情况</div>
+                            <div className="level-right">
+                                当前在线人数<span className="tag is-primary is-medium has-text-right">
+                                    {onlineUsers == null ? 0 : onlineUsers.length}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {salesRecordsElements}
                 </nav>
             </div>
         );
     }
 }
 
-export default StoreSales;
+const mapStateToProps = state => {
+    return {
+        salesRecords: state.storeSales.salesRecords,
+        onlineUsers: state.onlineUsers.list,
+    };
+};
+
+export default connect(mapStateToProps)(StoreSales);

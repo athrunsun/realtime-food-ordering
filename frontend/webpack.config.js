@@ -90,6 +90,9 @@ const config = {
             WEBSOCKET_SERVER: JSON.stringify('http://localhost:7001'),
             DEFAULT_ROOM_NAME: JSON.stringify('room:food-ordering'),
             SERVER_ADDRESS: JSON.stringify('http://localhost:7001'),
+            SOCKET_IO_EVENT_NAME_BROADCAST: JSON.stringify('broadcast'),
+            SOCKET_IO_EVENT_NAME_USER_JOIN: JSON.stringify('userJoin'),
+            SOCKET_IO_EVENT_NAME_USER_LEAVE: JSON.stringify('userLeave'),
         }),
     ],
     resolve: {

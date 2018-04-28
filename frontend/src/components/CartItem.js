@@ -11,9 +11,7 @@ class RemoveFromCartButton extends Component {
 
     render() {
         return (
-            <a className="icon" onClick={this._handleClick}>
-                <i className="fas fa-times has-text-danger"></i>
-            </a>
+            <a className="tag is-delete is-danger" onClick={this._handleClick} style={{marginLeft: '5px'}}></a>
         );
     }
 }

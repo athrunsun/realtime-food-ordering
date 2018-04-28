@@ -3,75 +3,59 @@
 module.exports = app => {
     return async (ctx, next) => {
         const { app, socket, logger, helper } = ctx;
-        const { io } = app;
-        const id = socket.id;
+        const { io, config } = app;
+        const socketId = socket.id;
         const nsp = io.of('/');
         const query = socket.handshake.query;
 
-        const { room, userId } = query;
+        const { room } = query;
         const rooms = [ room ];
 
-        logger.debug('#user_info', id, room, userId);
+        logger.debug(`User '${socketId}' connected and wants to join room '${room}'`);
 
-        io.on('connection', socket => {
-            io.emit('some event', { for: 'everyone' });
-        });
+        const tick = (socketId, msg) => {
+            logger.debug(`Going to tick user '${socketId}', message: ${msg}`);
+            socket.emit(socketId, helper.normalizeMsg(msg));
 
-        const tick = (id, msg) => {
-            logger.debug('#tick', id, msg);
-
-            // 踢出用户前发送消息
-            socket.emit(id, helper.parseMsg('deny', msg));
-
-            // 调用 adapter 方法踢出用户，客户端触发 disconnect 事件
-            nsp.adapter.remoteDisconnect(id, true, err => {
+            nsp.adapter.remoteDisconnect(socketId, true, err => {
                 logger.error(err);
             });
         };
 
-        const hasRoom = await app.redis.get(room);
-        logger.debug('#has_exist', hasRoom);
+        const roomExists = await app.redis.get(room);
+        logger.debug(`Room '${room}' exists: ${roomExists}`);
 
-        if (!hasRoom) {
-            tick(id, {
-                type: 'nonexistent',
-                message: `Room '${room}' does NOT exist!`,
-            });
+        if (!roomExists) {
+            tick(socketId, `Room '${room}' does NOT exist!`);
             return;
         }
 
-        // 用户加入
-        logger.debug('#join', room);
+        logger.debug(`User '${socketId}' is going to join room '${room}'`);
         socket.join(room);
 
-        // 在线列表
         nsp.adapter.clients(rooms, (err, clients) => {
-            logger.debug('#online_join', clients);
+            logger.debug('Current online users: ', clients);
 
-            // 更新在线用户列表
-            nsp.to(room).emit('online', {
-                clients,
-                action: 'join',
-                target: 'participator',
-                message: `User(${id}) joined.`,
+            nsp.to(room).emit(config.socketIOEventName.userJoin, {
+                payload: {
+                    currentOnlineUsers: clients,
+                    userId: socketId,
+                },
             });
         });
 
         await next();
 
-        // 用户离开
-        logger.debug('#leave', room);
+        logger.debug(`User '${socketId}' is leaving room '${room}'`);
 
-        // 在线列表
         nsp.adapter.clients(rooms, (err, clients) => {
-            logger.debug('#online_leave', clients);
+            logger.debug('Current online users: ', clients);
 
-            // 更新在线用户列表
-            nsp.to(room).emit('online', {
-                clients,
-                action: 'leave',
-                target: 'participator',
-                message: `User(${id}) leaved.`,
+            nsp.to(room).emit(config.socketIOEventName.userLeave, {
+                payload: {
+                    currentOnlineUsers: clients,
+                    userId: socketId,
+                },
             });
         });
     };

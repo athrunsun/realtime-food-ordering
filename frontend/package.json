@@ -5,7 +5,8 @@
     "scripts": {
         "build": "$(yarn bin)/webpack --verbose",
         "watch": "$(yarn bin)/webpack --watch --verbose",
-        "server": "node server.js"
+        "server": "node server.js",
+        "server:debug": "node --inspect-brk server.js"
     },
     "devDependencies": {
         "babel-core": "^6.26.0",

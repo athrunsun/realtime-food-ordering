@@ -1,3 +1,4 @@
+import * as log from 'loglevel';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
@@ -10,21 +11,35 @@ class Cart extends Component {
         dispatch(clearCart());
     };
 
-    render() {
-        const { foodList } = this.props;
+    handleSubmitCartClick = () => {
+        const { dispatch, cartItems, totalPrice } = this.props;
 
-        const foodTotalPrice =
-            foodList == null || foodList.length <= 0
-                ? 0
-                : foodList.reduce((accumulator, food) => {
-                      const priceAsFloat = +parseFloat(food.price).toFixed(2);
-                      return accumulator + priceAsFloat;
-                  }, 0);
+        if (cartItems == null || cartItems.length <= 0) {
+            return;
+        }
+
+        log.debug(`Going to submit cart with a total price of ${totalPrice}...`);
+
+        window.socket.emit('ordering', {
+            meta: {
+                timestamp: Date.now(),
+            },
+            payload: {
+                foodList: cartItems,
+                totalPrice: totalPrice,
+            },
+        });
+
+        dispatch(clearCart());
+    };
+
+    render() {
+        const { cartItems, totalPrice } = this.props;
 
         const cartItemsElements =
-            foodList == null || foodList.length <= 0
+            cartItems == null || cartItems.length <= 0
                 ? null
-                : foodList.map((item, index) => (
+                : cartItems.map((item, index) => (
                       <div key={index} className="panel-block">
                           <CartItem food={item} />
                       </div>
@@ -38,7 +53,7 @@ class Cart extends Component {
                             <div className="level" style={{ width: '100%' }}>
                                 <div className="level-left">购物车</div>
                                 <div className="level-right">
-                                    <span className="has-text-right">￥{foodTotalPrice}</span>
+                                    <span className="tag is-primary is-medium has-text-right">￥{totalPrice}</span>
                                 </div>
                             </div>
                         </div>
@@ -46,10 +61,17 @@ class Cart extends Component {
                         <div className="panel-block">
                             <div className="columns" style={{ width: '100%' }}>
                                 <div className="column is-half">
-                                    <button className="button is-link is-fullwidth">提交</button>
+                                    <button
+                                        className="button is-link is-fullwidth"
+                                        onClick={this.handleSubmitCartClick}
+                                    >
+                                        提交
+                                    </button>
                                 </div>
                                 <div className="column is-half">
-                                    <button className="button is-fullwidth" onClick={this.handleClearCartClick}>清空</button>
+                                    <button className="button is-fullwidth" onClick={this.handleClearCartClick}>
+                                        清空
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +84,8 @@ class Cart extends Component {
 
 const mapStateToProps = state => {
     return {
-        foodList: state.cart.foodList,
+        totalPrice: state.cart.totalPrice,
+        cartItems: state.cart.foodList,
     };
 };
 

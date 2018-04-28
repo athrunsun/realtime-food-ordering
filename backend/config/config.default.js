@@ -4,7 +4,11 @@ const appConfig = appInfo => {
     const config = {};
     config.keys = 'bread-theory';
     config.defaultRoomName = 'room:food-ordering';
-    config.broadcastEventName = 'broadcast';
+    config.socketIOEventName = {
+        broadcast: 'broadcast',
+        userJoin: 'userJoin',
+        userLeave: 'userLeave',
+    };
 
     config.redis = {
         client: {

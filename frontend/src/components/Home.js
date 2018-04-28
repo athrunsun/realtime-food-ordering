@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import io from 'socket.io-client';
+import * as log from 'loglevel';
 
 import StoreSales from 'components/StoreSales';
 import MyOrderings from 'components/MyOrderings';
 import FoodList from 'components/FoodList';
 import Cart from 'components/Cart';
 
+import { recordSale, recordMyOrdering, updateOnlineUsers } from 'actions';
+
 class Home extends Component {
     handleWindowOnLoad = () => {
+        const { dispatch } = this.props;
+
         const socket = io(WEBSOCKET_SERVER, {
             query: {
                 room: DEFAULT_ROOM_NAME,
@@ -16,12 +22,31 @@ class Home extends Component {
         });
 
         socket.on('connect', () => {
-            const id = socket.id;
+            const socketId = socket.id;
+            log.info(`Websocket connected, socketId: '${socketId}'`);
 
-            console.log('#connect,', id, socket);
+            socket.on(SOCKET_IO_EVENT_NAME_BROADCAST, msg => {
+                const { meta, payload } = msg;
+                log.debug(`Going to record a sale with total price of ${payload.totalPrice}...`);
+                dispatch(recordSale({ userId: payload.userId, totalPrice: payload.totalPrice, timestamp: meta.timestamp }));
+            });
 
-            socket.on(id, msg => {
-                console.log('#receive,', msg);
+            socket.on(SOCKET_IO_EVENT_NAME_USER_JOIN, msg => {
+                const { meta, payload } = msg;
+                log.debug(`User ${payload.userId} joined, going to update online users...`);
+                dispatch(updateOnlineUsers(payload.currentOnlineUsers));
+            });
+
+            socket.on(SOCKET_IO_EVENT_NAME_USER_LEAVE, msg => {
+                const { meta, payload } = msg;
+                log.debug(`User ${payload.userId} left, going to update online users...`);
+                dispatch(updateOnlineUsers(payload.currentOnlineUsers));
+            });
+
+            socket.on(socketId, msg => {
+                const { meta, payload } = msg;
+                log.debug(`Going to record an ordering with total price of ${payload.totalPrice}...`);
+                dispatch(recordMyOrdering({ userId: payload.userId, totalPrice: payload.totalPrice, timestamp: meta.timestamp }));
             });
         });
 
@@ -58,4 +83,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default connect()(Home);
